@@ -1,0 +1,27 @@
+use_frameworks!
+
+
+target 'Time_Tracker' do
+        pod 'RealmSwift'
+
+        target 'Time_TrackerTests' do
+			inherit! :search_paths
+        end
+end
+
+
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            # Signing
+            config.build_settings['PROVISIONING_PROFILE_SPECIFIER'] = ''
+
+            # Swift4 pods
+            next unless target.name.start_with?("RealmSwift") 
+            config.build_settings['SWIFT_VERSION'] = '4.0'
+
+        end
+    end
+end
+
